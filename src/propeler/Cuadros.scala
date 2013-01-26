@@ -15,26 +15,32 @@ class Cuadros(val n:Int, val m:Int) extends Panel {
   
   background = new Color(247, 247, 249)
   
-  def getBytesForArduino():Array[Array[Byte]] = {
-    val bytes:Array[Array[Byte]] = Array.fill(m, 6)(0)
-    var byte:Byte = 0;
+  def getBytesForArduino():Array[Array[Int]] = {
+    val bytes:Array[Array[Int]] = Array.fill(m, 6)(0)
+    var byte:Int = 0;
     var pd:Array[Boolean] = Array.fill(8)(false)
     for(im <- 0 until m)
-      for(np <- 0 until 3)
+      for(np <- 0 until 3){
         for(ea <- 0 until 2){
-          if(ea == 0) pd = datos(im).slice(np*16,8)
-          else pd = datos(im).slice((np+1)*16-8,8)
+          if(ea == 0){
+            pd = datos(im).slice(np*16,np*16+8).reverse
+          }
+          else{
+            pd = datos(im).slice((np+1)*16-8,(np+1)*16).map(ele => !ele)
+          }
           byte = arrayBooleanToByte(pd)
           bytes(im)(2*np+ea) = byte
         }
+      }
+    bytes.foreach(row => println(row.mkString(",")))
     bytes
   }
   
-  private def arrayBooleanToByte(array: Array[Boolean]):Byte = {
-    var retorno:Byte = 0
+  private def arrayBooleanToByte(array: Array[Boolean]):Int = {
+    var retorno:Int = 0
     for(ia <- 0 until 8){
       if(array(ia)){
-    	  retorno = (retorno + Math.pow(2, ia)).toByte
+    	  retorno = (retorno + Math.pow(2, ia)).toInt
       }
     }
     retorno
@@ -46,10 +52,10 @@ class Cuadros(val n:Int, val m:Int) extends Panel {
     dx = size.width.toDouble/m
     dy = size.height.toDouble/n
     for(x <- dx to size.width by dx){
-//      g.drawLine(x.toInt, 0, x.toInt, size.height)
+      g.drawLine(x.toInt, 0, x.toInt, size.height)
     }
     for(y <- dy to size.height by dy){
-//      g.drawLine(0, y.toInt, size.width, y.toInt)
+      g.drawLine(0, y.toInt, size.width, y.toInt)
     }
     for(nr <- 0 until n){
       for(nc <- 0 until m){
