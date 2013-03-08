@@ -11,13 +11,13 @@ object Interfaz extends SimpleSwingApplication {
   var ps: PuertoSerie = _
   def top = new MainFrame {
     title = "Propeller"
-    preferredSize = new Dimension(640, 256)
+    preferredSize = new Dimension(660, 256)
     val conectar = new Button { text = "Conectar" }
     val borrar = new Button { text = "Limpiar" }
     val enviar = new Button { text = "Enviar Datos" }
     val label = new Label { text = "see el texto" }
-    val cuadros = new Cuadros(48, 2) {
-      preferredSize = new Dimension(300, 300)
+    val cuadros = new Cuadros(48, 240) {
+      preferredSize = new Dimension(660, 256)
       listenTo(mouse.clicks)
       listenTo(mouse.moves)
       reactions += {
@@ -72,13 +72,13 @@ object Interfaz extends SimpleSwingApplication {
             label.text = "Puerto serie desconectado"
           } else {
             // Puerto para el bluetooth (para el bluetooth siempre debe ser 115200 el baudrate.
-            ps = new PuertoSerie("/dev/tty.RN42-589A-SPP", 115200)
+            ps = new PuertoSerie("/dev/tty.linvor-DevB", 9600)
             // Puerto para el cable en el puerto usb que esta junto al lector de tarjetas
-            // ps = new PuertoSerie("/dev/tty.usbmodemfd121",115200)
+//             ps = new PuertoSerie("/dev/tty.usbmodemfa131",115200)
             ps.conectar()
             if (ps.conectado) {
               label.text = "Puerto serie conectado."
-              conectar.text = "Desconectar"
+              conectar.text = "Desconectar."
             } else label.text = "No se pudo conectar al puerto serie especificado."
           }
         } else if (b.equals(borrar)) {

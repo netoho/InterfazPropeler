@@ -40,6 +40,7 @@ class PuertoSerie(puerto: String, br: Int) {
       row.foreach(value => {
         try {
           os.write(value)
+          Thread.sleep(14)
         } catch {
           case e: Exception => println(e.getCause())
         }
